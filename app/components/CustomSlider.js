@@ -1,25 +1,17 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import Slider from '@react-native-community/slider';
+import Slider from "@react-native-community/slider";
 import {
   widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 
-const CustomSlider = ( props ) => {
-  const { 
-    text, 
-    min, 
-    max,
-    onValueChange,
-    value,
-    style,
-  } = props;
+const CustomSlider = (props) => {
+  const { text, min, max, onValueChange, value, style } = props;
   return (
     <View style={style}>
       <Text style={styles.text}>{text}</Text>
       <View style={styles.sliderContainer}>
-        <Slider 
+        <Slider
           style={styles.slider}
           minimumValue={min}
           maximumValue={max}
@@ -31,7 +23,7 @@ const CustomSlider = ( props ) => {
       </View>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   slider: {
@@ -52,7 +44,7 @@ const styles = StyleSheet.create({
   value: {
     fontSize: wp("4%"),
     marginLeft: 5,
-  }
+  },
 });
 
 export default CustomSlider;

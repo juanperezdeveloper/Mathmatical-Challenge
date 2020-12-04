@@ -7,11 +7,11 @@ const CustomSwitch = (props) => {
   return (
     <View style={styles.container}>
       <Text>Sound {value ? "On" : "Off"}</Text>
-      <Switch 
-        value={value} 
-        onValueChange={onValueChange} 
+      <Switch
+        value={value}
+        onValueChange={onValueChange}
         style={[styles.switch, style]}
-        trackColor={{true: "#81b0ff"}}
+        trackColor={{ true: "#81b0ff" }}
       />
     </View>
   );
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
   },
   switch: {
     marginLeft: 5,
-    transform: [{ scaleX: .7 }, { scaleY: .7 }],
+    transform: [{ scaleX: 0.7 }, { scaleY: 0.7 }],
   },
 });
 

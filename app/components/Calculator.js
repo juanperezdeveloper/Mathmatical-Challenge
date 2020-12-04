@@ -2,7 +2,6 @@ import React from "react";
 import { View, StyleSheet } from "react-native";
 import {
   widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import Button from "./Button";
 
@@ -14,7 +13,7 @@ const Calculator = (props) => {
     } else {
       setAnswer("");
     }
-  }
+  };
   return (
     <View style={styles.container}>
       <View style={styles.rowContainer}>
@@ -78,7 +77,7 @@ const Calculator = (props) => {
         />
       </View>
       <View style={styles.rowContainer}>
-        <View style={{width: wp("15%"), margin: 5}}></View>
+        <View style={{ width: wp("15%"), margin: 5 }}></View>
         <Button
           label={"0"}
           onPress={() => handleClicked(0)}
@@ -109,11 +108,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#fff",
   },
-  rowContainer: {
-    flexDirection: "row",
-  },
   label: {
     fontSize: wp("5%"),
+  },
+  rowContainer: {
+    flexDirection: "row",
   },
 });
 

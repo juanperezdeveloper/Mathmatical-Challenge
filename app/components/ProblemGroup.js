@@ -1,41 +1,41 @@
-import React, { useState } from "react";
-import { View, Modal, StyleSheet, Text } from "react-native";
+import React from "react";
+import { View, StyleSheet } from "react-native";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import Button from "./Button";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { SET_PROBLEM_ID } from "../store/actions/types";
 
 const ProblemGroup = () => {
   const dispatch = useDispatch();
   const handleButtonClick = (id) => {
     dispatch({ type: SET_PROBLEM_ID, payload: id });
-  }
+  };
 
   return (
     <View style={styles.container}>
       <View style={styles.rowContainer}>
-        <Button 
+        <Button
           label={"ADDITION"}
           onPress={() => handleButtonClick(1)}
           buttonStyle={styles.button}
           labelStyle={styles.label}
         />
-        <Button 
+        <Button
           label={"SUBTRACTION"}
           onPress={() => handleButtonClick(2)}
           buttonStyle={styles.button}
           labelStyle={styles.label}
         />
-        <Button 
+        <Button
           label={"MULTIPLICATION"}
           onPress={() => handleButtonClick(3)}
           buttonStyle={styles.button}
           labelStyle={styles.label}
         />
-        <Button 
+        <Button
           label={"DIVISION"}
           onPress={() => handleButtonClick(4)}
           buttonStyle={styles.button}
@@ -43,25 +43,25 @@ const ProblemGroup = () => {
         />
       </View>
       <View style={styles.rowContainer}>
-        <Button 
+        <Button
           label={"MYSTERY ADDITION"}
           onPress={() => handleButtonClick(5)}
           buttonStyle={styles.button}
           labelStyle={styles.label}
         />
-        <Button 
+        <Button
           label={"MYSTERY SUBTRACTION"}
           onPress={() => handleButtonClick(6)}
           buttonStyle={styles.button}
           labelStyle={styles.label}
         />
-        <Button 
+        <Button
           label={"MYSTERY MULTPLICATION"}
           onPress={() => handleButtonClick(7)}
           buttonStyle={styles.button}
           labelStyle={styles.label}
         />
-        <Button 
+        <Button
           label={"MYSTERY DIVISION"}
           onPress={() => handleButtonClick(8)}
           buttonStyle={styles.button}
@@ -70,7 +70,7 @@ const ProblemGroup = () => {
       </View>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   button: {

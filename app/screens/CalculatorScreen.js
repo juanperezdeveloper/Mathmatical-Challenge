@@ -19,9 +19,8 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import { SET_PROBLEM_ID } from "../store/actions/types";
 
-const CalculatorScreen = (props) => {
-  const { problemId, onPress } = props;
-  const problemCount = useSelector((state) => state.math.problemCount);
+const CalculatorScreen = ({ problemId }) => {
+  const numberOfProblems = useSelector((state) => state.math.numberOfProblems);
   const dispatch = useDispatch();
   const [correctCount, setCorrectCount] = useState(0);
   const [solvedCount, setSolvedCount] = useState(1);
@@ -207,7 +206,7 @@ const CalculatorScreen = (props) => {
   useEffect(() => {
     if (checkClicked) {
       setCount();
-      if (solvedCount <= problemCount - 1) {
+      if (solvedCount <= numberOfProblems - 1) {
         delay();
       } else {
         let eTime = Date.now() / 1000;
@@ -228,7 +227,7 @@ const CalculatorScreen = (props) => {
         <View style={styles.markContainer}>
           <View style={styles.box1}>
             <Text style={styles.problemText}>
-              Problem: {solvedCount}/{problemCount}
+              Problem: {solvedCount}/{numberOfProblems}
             </Text>
           </View>
           <View style={styles.box2}>
@@ -249,7 +248,7 @@ const CalculatorScreen = (props) => {
             </Text>
           ) : answerState == 3 ? (
             <Text style={[styles.message, { color: "#f00" }]}>
-              Please input the answer.
+              Please type answer.
             </Text>
           ) : (
             <Text style={styles.message}></Text>
@@ -406,6 +405,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderWidth: 5,
   },
+  markContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    height: hp("6%"),
+  },
   message: {
     fontSize: wp("7%"),
   },
@@ -413,12 +418,6 @@ const styles = StyleSheet.create({
     height: hp("6.5%"),
     justifyContent: "center",
     alignItems: "center",
-  },
-  markContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    height: hp("6%"),
   },
   modalButton: {
     width: "40%",

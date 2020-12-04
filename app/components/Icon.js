@@ -6,7 +6,6 @@ const Icon = (props) => {
   const {
     name,
     size = 40,
-    backgroundColor = "#000",
     isMaterialIcon = false,
     hasBackground = false,
     iconColor = "#fff",
@@ -17,13 +16,9 @@ const Icon = (props) => {
       {hasBackground ? (
         <View style={styles.container}>
           {isMaterialIcon ? (
-            <MaterialIcons 
-              name={name}
-              color={iconColor}
-              size={size * 0.5}
-            />
+            <MaterialIcons name={name} color={iconColor} size={size * 0.5} />
           ) : (
-            <MaterialCommunityIcons 
+            <MaterialCommunityIcons
               name={name}
               color={iconColor}
               size={size * 0.5}
@@ -31,13 +26,9 @@ const Icon = (props) => {
           )}
         </View>
       ) : isMaterialIcon ? (
-        <MaterialIcons 
-          name={name}
-          color={iconColor}
-          size={size * 0.5}
-        />
+        <MaterialIcons name={name} color={iconColor} size={size * 0.5} />
       ) : (
-        <MaterialCommunityIcons 
+        <MaterialCommunityIcons
           name={name}
           color={iconColor}
           size={size * 0.5}

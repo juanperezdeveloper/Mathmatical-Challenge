@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { 
+import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
@@ -8,10 +8,12 @@ import {
 const Footer = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Ages 4+, Made for ages 6-8, Remedial Practice for ages 9-12</Text>
+      <Text style={styles.text}>
+        Ages 4+, Made for ages 6-8, Remedial Practice for ages 9-12
+      </Text>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {

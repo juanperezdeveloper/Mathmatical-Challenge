@@ -7,12 +7,12 @@ import {
 import ButtonIcon from "../components/ButtonIcon";
 import CustomSlider from "../components/CustomSlider";
 import CustomSwitch from "../components/CustomSwitch";
-import { 
-  sliderMinValue, 
+import {
+  sliderMinValue,
   sliderMaxValue,
   speechMinValue,
   speechMaxValue,
- } from "../common/Constants";
+} from "../common/Constants";
 import { useSelector, useDispatch } from "react-redux";
 import {
   SET_PROBLEM_COUNT,
@@ -22,21 +22,22 @@ import {
 
 const Settings = () => {
   const dispatch = useDispatch();
-  const numberOfProblems = useSelector((state) => state.math.problemCount);
+  const numberOfProblems = useSelector((state) => state.math.numberOfProblems);
   const maxValue = useSelector((state) => state.math.maxValue);
   const speech = useSelector((state) => state.math.speech);
 
   const toggleSwitch = () => {
-    dispatch({ type: SET_SPEECH, payload: { ...speech, state: !speech.state } });
+    dispatch({
+      type: SET_SPEECH,
+      payload: { ...speech, state: !speech.state },
+    });
   };
 
   const handleReset = () => {
     dispatch({ type: null, payload: null });
-  }
+  };
 
-  const handleReadMe = () => {
-
-  }
+  const handleReadMe = () => {};
 
   const handleChangeValue = (val, id) => {
     switch (id) {
@@ -65,27 +66,24 @@ const Settings = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}> 
-        <ButtonIcon 
+      <View style={styles.header}>
+        <ButtonIcon
           name={"information-outline"}
           size={hp("8%")}
           iconColor={"#000"}
           onPress={handleReadMe}
         />
         <Text style={styles.settings}>Settings</Text>
-        <TouchableOpacity
-          activeOpacity={1}
-          onPress={handleReset}
-        >
+        <TouchableOpacity activeOpacity={1} onPress={handleReset}>
           <Text>Reset</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.line}></View>
       <View style={styles.controlContainer}>
-        <CustomSwitch 
-          value={speech.state} 
+        <CustomSwitch
+          value={speech.state}
           onValueChange={toggleSwitch}
-          style={styles.controlSpace} 
+          style={styles.controlSpace}
         />
         <CustomSlider
           text={"Number Of Problems"}
@@ -93,7 +91,7 @@ const Settings = () => {
           max={sliderMaxValue}
           onValueChange={(val) => handleChangeValue(val, 1)}
           value={numberOfProblems}
-          style={styles.controlSpace} 
+          style={styles.controlSpace}
         />
         <CustomSlider
           text={"Addition"}
@@ -101,7 +99,7 @@ const Settings = () => {
           max={sliderMaxValue}
           onValueChange={(val) => handleChangeValue(val, 2)}
           value={maxValue.add}
-          style={styles.controlSpace} 
+          style={styles.controlSpace}
         />
         <CustomSlider
           text={"Subtraction"}
@@ -109,7 +107,7 @@ const Settings = () => {
           max={sliderMaxValue}
           onValueChange={(val) => handleChangeValue(val, 3)}
           value={maxValue.sub}
-          style={styles.controlSpace} 
+          style={styles.controlSpace}
         />
         <CustomSlider
           text={"Multiplication/Division"}
@@ -117,7 +115,7 @@ const Settings = () => {
           max={sliderMaxValue}
           onValueChange={(val) => handleChangeValue(val, 4)}
           value={maxValue.multiDiv}
-          style={styles.controlSpace} 
+          style={styles.controlSpace}
         />
         <CustomSlider
           text={"Speech speed"}
@@ -125,7 +123,7 @@ const Settings = () => {
           max={speechMaxValue}
           onValueChange={(val) => handleChangeValue(val, 5)}
           value={speech.speed}
-          style={styles.controlSpace} 
+          style={styles.controlSpace}
         />
       </View>
       <View style={styles.footer}>

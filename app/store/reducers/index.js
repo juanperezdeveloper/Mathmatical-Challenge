@@ -7,7 +7,7 @@ import {
 
 const initialState = {
   problemId: 0,
-  problemCount: 2,
+  numberOfProblems: 10,
   maxValue: {
     add: 10,
     sub: 10,
@@ -25,7 +25,7 @@ const reducer = (state = initialState, action) => {
     case SET_PROBLEM_ID:
       return { ...state, problemId: payload };
     case SET_PROBLEM_COUNT:
-      return { ...state, problemCount: payload };
+      return { ...state, numberOfProblems: payload };
     case SET_MAX_VALUE:
       return { ...state, maxValue: payload };
     case SET_SPEECH:
