@@ -1,7 +1,7 @@
 import React from "react";
 import { View, ImageBackground, StyleSheet } from "react-native";
 
-const image = require("../assets/images/1x/background.png");
+const image = require("../assets/images/background.png");
 
 const Screen = ({ children, style }) => (
   <View style={[styles.container, style]}>

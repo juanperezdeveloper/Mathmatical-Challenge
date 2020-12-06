@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { TouchableOpacity, View, Text, StyleSheet } from "react-native";
+import Modal from "react-native-modal";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
+import { useSelector, useDispatch } from "react-redux";
 
 import ButtonIcon from "../components/ButtonIcon";
 import CustomSlider from "../components/CustomSlider";
@@ -14,18 +16,19 @@ import {
   SPEECH_MIN_VALUE,
   SPEECH_MAX_VALUE,
 } from "../common/Constants";
-import { useSelector, useDispatch } from "react-redux";
 import {
   SET_PROBLEM_COUNT,
   SET_MAX_VALUE,
   SET_SPEECH,
 } from "../store/actions/types";
+import ReadMe from "./ReadMeScreen";
 
 const Settings = () => {
   const dispatch = useDispatch();
   const numberOfProblems = useSelector((state) => state.math.numberOfProblems);
   const maxValue = useSelector((state) => state.math.maxValue);
   const speech = useSelector((state) => state.math.speech);
+  const [showReadMe, setShowReadMe] = useState(false);
 
   const toggleSwitch = () => {
     dispatch({
@@ -38,7 +41,9 @@ const Settings = () => {
     dispatch({ type: null, payload: null });
   };
 
-  const handleReadMe = () => {};
+  const handleReadMe = () => {
+    setShowReadMe(true);
+  };
 
   const handleChangeValue = (val, id) => {
     switch (id) {
@@ -75,7 +80,7 @@ const Settings = () => {
           onPress={handleReadMe}
         />
         <Text style={styles.settings}>Settings</Text>
-        <TouchableOpacity activeOpacity={1} onPress={handleReset}>
+        <TouchableOpacity onPress={handleReset}>
           <Text>Reset</Text>
         </TouchableOpacity>
       </View>
@@ -131,6 +136,16 @@ const Settings = () => {
         <Text style={styles.footerText}>© SCG Productions</Text>
         <Text style={styles.footerText}>Version 1.2.0</Text>
       </View>
+      <Modal
+        isVisible={showReadMe}
+        animationIn="zoomInDown"
+        animationOut="zoomOutUp"
+        animationInTiming={300}
+        animationOutTiming={300}
+        backdropOpacity={0.2}
+      >
+        <ReadMe setShowReadMe={setShowReadMe}/>
+      </Modal>
     </View>
   );
 };
@@ -161,9 +176,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   line: {
-    borderBottomWidth: 1,
     width: 500,
     marginLeft: -50,
+    borderBottomWidth: 1,
+    borderBottomColor: "gray",
   },
   settings: {
     fontSize: wp("5%"),

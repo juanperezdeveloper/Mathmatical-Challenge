@@ -12,7 +12,7 @@ const ButtonIcon = (props) => {
   } = props;
 
   return (
-    <TouchableOpacity activeOpacity={1} onPress={onPress}>
+    <TouchableOpacity onPress={onPress}>
       {isMaterialIcon ? (
         <MaterialIcons name={name} color={iconColor} size={size * 0.5} />
       ) : (

@@ -11,7 +11,7 @@ const CustomSwitch = (props) => {
         value={value}
         onValueChange={onValueChange}
         style={[styles.switch, style]}
-        trackColor={{ true: "#81b0ff" }}
+        trackColor={{ true: "#81b0ff", false: "gray" }}
       />
     </View>
   );

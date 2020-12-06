@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, Platform, TouchableOpacity } from "react-native";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import Tooltip from "react-native-walkthrough-tooltip";
+import Constants from "expo-constants";
 
 import SettingScreen from "../screens/SettingScreen";
 import ButtonIcon from "./ButtonIcon";
@@ -33,6 +34,9 @@ const Header = (props) => {
         {showSetting && (
           <Tooltip
             isVisible={toolTipVisible}
+            animated={true}
+            topAdjustment={Platform.OS === 'android' ? -Constants.statusBarHeight : 0}
+            showChildInTooltip={false}
             content={<SettingScreen />}
             placement="bottom"
             onClose={() => setToolTipVisible(false)}
@@ -67,7 +71,6 @@ const styles = StyleSheet.create({
   box2: {
     width: "50%",
     flexDirection: "row-reverse",
-    justifyContent: "flex-start",
     alignItems: "center",
     marginRight: -20,
   },

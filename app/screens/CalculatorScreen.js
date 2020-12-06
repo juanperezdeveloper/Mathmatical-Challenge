@@ -17,7 +17,6 @@ import {
   SLIDER_MIN_VALUE,
   SLIDER_MAX_VALUE,
   CORRECT_MESSAGE,
-  WRONG_MESSAGE,
   ERROR_MESSAGE,
   NO_ANSWER_MESSAGE,
   DELAY_SECONDS,
@@ -54,12 +53,12 @@ const CalculatorScreen = ({ problemId }) => {
   const [scoreArray, setScoreArray] = useState([]);
   const [startTime, setStartTime] = useState(Date.now() / 1000);
   const [endTime, setEndTime] = useState(Date.now() / 1000);
-  const correctIcon = require("../assets/images/1x/correctIcon.png");
-  const wrongIcon = require("../assets/images/1x/wrongIcon.png");
+  const correctIcon = require("../assets/images/correctIcon.png");
+  const wrongIcon = require("../assets/images/wrongIcon.png");
 
   const readText = (text) => {
     if (speech.state) {
-      Speech.speak(text);
+      Speech.speak(text, { rate: 1 + (speech.speed - 1) * 0.1 });
     }
   };
 
@@ -106,9 +105,9 @@ const CalculatorScreen = ({ problemId }) => {
         symbol = "+";
         result = op1 + op2;
         answer = getRandomInt(1, 2);
-        text =
-          answer == 1
-            ? MYSTERY_PLUS_OP1 + " " + op2 + " " + EQUAL + " " + result
+        text = 
+          answer == 1 
+            ? MYSTERY_PLUS_OP1 + " " + op2 + " " + EQUAL + " " + result 
             : op1 + " " + MYSTERY_PLUS_OP2 + " " + EQUAL + " " + result;
         break;
       case 6: // mystery subtraction
@@ -221,7 +220,7 @@ const CalculatorScreen = ({ problemId }) => {
       setAnswerState(1);
       setCorrectCount(correctCount + 1);
     } else if (answer !== "" && checkClicked) {
-      readText(WRONG_MESSAGE);
+      readText(ERROR_MESSAGE + " " + correctValue);
       setAnswerState(2);
       setWrongCount(wrongCount + 1);
     }
@@ -232,6 +231,10 @@ const CalculatorScreen = ({ problemId }) => {
   };
 
   const handleStartOver = () => {
+    setScoreArray([
+      ...scoreArray,
+      Math.ceil((correctCount / (endTime - startTime)) * 1000),
+    ]);
     setModalVisible(false);
     setStartTime(Date.now() / 1000);
     setEndTime(Date.now() / 1000);
@@ -260,12 +263,7 @@ const CalculatorScreen = ({ problemId }) => {
       if (solvedCount <= numberOfProblems - 1) {
         delay();
       } else {
-        let eTime = Date.now() / 1000;
-        setEndTime(eTime);
-        setScoreArray([
-          ...scoreArray,
-          Math.ceil((correctCount / (eTime - startTime)) * 1000),
-        ]);
+        setEndTime(Date.now() / 1000);
         delayShowingModal();
       }
     }
@@ -352,7 +350,7 @@ const CalculatorScreen = ({ problemId }) => {
             <Text style={styles.scoreText}>Last 5 Scores</Text>
             {scoreArray.length > 0 &&
               scoreArray.slice(-5).map((score, index) => (
-                <View key={index} style={{ width: wp("11%") }}>
+                <View key={index} style={{ width: wp("13%") }}>
                   <Text style={styles.lastFiveScoreText}>
                     {index + 1}. {score}
                   </Text>

@@ -4,9 +4,9 @@
     "slug": "MultiplicationChallenge",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./app/assets/images/icons/Icon-40.png",
+    "icon": "./app/assets/images/favicon.png",
     "splash": {
-      "image": "./app/assets/images/launch/Default.png",
+      "image": "./app/assets/images/splash.jpg",
       "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
@@ -21,12 +21,12 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./app/assets/images/icons/Icon-40.png",
+        "foregroundImage": "./app/assets/images/favicon.png",
         "backgroundColor": "#FFFFFF"
       }
     },
     "web": {
-      "favicon": "./app/assets/images/icons/Icon-40.png"
+      "favicon": "./app/assets/images/favicon.png"
     }
   }
 }

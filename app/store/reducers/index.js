@@ -15,7 +15,7 @@ const initialState = {
   },
   speech: {
     state: false,
-    speed: 2,
+    speed: 1,
   },
 };
 
