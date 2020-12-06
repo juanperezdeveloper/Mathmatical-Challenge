@@ -1,26 +1,46 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
+import { View, Text, Image, Platform, StyleSheet } from "react-native";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import Modal from "react-native-modal";
+import { useSelector, useDispatch } from "react-redux";
+import Constants from "expo-constants";
+import * as Speech from "expo-speech";
+
 import Header from "../components/Header";
 import Screen from "../components/Screen";
 import Button from "../components/Button";
 import Calculator from "../components/Calculator";
 import {
-  sliderMinValue,
-  sliderMaxValue,
-  correctMessage,
-  errorMessage,
-  delaySeconds,
+  SLIDER_MIN_VALUE,
+  SLIDER_MAX_VALUE,
+  CORRECT_MESSAGE,
+  WRONG_MESSAGE,
+  ERROR_MESSAGE,
+  NO_ANSWER_MESSAGE,
+  DELAY_SECONDS,
+  PLUS,
+  MINUS,
+  MULTIPLY_BY,
+  DIVIDE_BY,
+  MYSTERY_PLUS_OP1,
+  MYSTERY_PLUS_OP2,
+  MYSTERY_MINUS_OP1,
+  MYSTERY_MINUS_OP2,
+  MYSTERY_MULTIPLY_BY_OP1,
+  MYSTERY_MULTIPLY_BY_OP2,
+  MYSTERY_DIVIDE_BY_OP1,
+  MYSTERY_DIVIDE_BY_OP2,
+  EQUAL,
 } from "../common/Constants";
-import { useSelector, useDispatch } from "react-redux";
 import { SET_PROBLEM_ID } from "../store/actions/types";
 
 const CalculatorScreen = ({ problemId }) => {
   const numberOfProblems = useSelector((state) => state.math.numberOfProblems);
+  const maxValue = useSelector((state) => state.math.maxValue);
+  const speech = useSelector((state) => state.math.speech);
   const dispatch = useDispatch();
   const [correctCount, setCorrectCount] = useState(0);
   const [solvedCount, setSolvedCount] = useState(1);
@@ -36,97 +56,126 @@ const CalculatorScreen = ({ problemId }) => {
   const [endTime, setEndTime] = useState(Date.now() / 1000);
   const correctIcon = require("../assets/images/1x/correctIcon.png");
   const wrongIcon = require("../assets/images/1x/wrongIcon.png");
-  const maxValue = useSelector((state) => state.math.maxValue);
-  let correctCnt = 0;
+
+  const readText = (text) => {
+    if (speech.state) {
+      Speech.speak(text);
+    }
+  };
 
   const setFormulaItems = () => {
-    let op1, op2, symbol, result, answer, value1, value2;
+    let op1, op2, symbol, result, answer, value1, value2, text;
     switch (problemId) {
       case 1: // addition
-        op1 = getRandomInt(sliderMinValue, maxValue.add);
-        op2 = getRandomInt(sliderMinValue, maxValue.add);
+        op1 = getRandomInt(SLIDER_MIN_VALUE, maxValue.add);
+        op2 = getRandomInt(SLIDER_MIN_VALUE, maxValue.add);
         symbol = "+";
         result = op1 + op2;
         answer = 3;
+        text = op1 + " " + PLUS + " " + op2;
         break;
       case 2: // subtraction
-        value1 = getRandomInt(sliderMinValue, maxValue.sub);
-        value2 = getRandomInt(sliderMinValue, maxValue.sub);
+        value1 = getRandomInt(SLIDER_MIN_VALUE, maxValue.sub);
+        value2 = getRandomInt(SLIDER_MIN_VALUE, maxValue.sub);
         op1 = value1 >= value2 ? value1 : value2;
         op2 = value1 >= value2 ? value2 : value1;
         symbol = "-";
         result = op1 - op2;
         answer = 3;
+        text = op1 + " " + MINUS + " " + op2;
         break;
       case 3: // multiplication
-        op1 = getRandomInt(sliderMinValue, maxValue.multiDiv);
-        op2 = getRandomInt(sliderMinValue, maxValue.multiDiv);
-        symbol = "...";
+        op1 = getRandomInt(SLIDER_MIN_VALUE, maxValue.multiDiv);
+        op2 = getRandomInt(SLIDER_MIN_VALUE, maxValue.multiDiv);
+        symbol = "X";
         result = op1 * op2;
         answer = 3;
+        text = op1 + " " + MULTIPLY_BY + " " + op2;
         break;
       case 4: // division
-        op2 = getRandomInt(sliderMinValue, maxValue.multiDiv);
-        result = getRandomInt(sliderMinValue, maxValue.multiDiv);
+        op2 = getRandomInt(SLIDER_MIN_VALUE, maxValue.multiDiv);
+        result = getRandomInt(SLIDER_MIN_VALUE, maxValue.multiDiv);
         symbol = "/";
         op1 = op2 * result;
         answer = 3;
+        text = op1 + " " + DIVIDE_BY + " " + op2;
         break;
       case 5: // mystery additon
-        op1 = getRandomInt(sliderMinValue, sliderMaxValue);
-        op2 = getRandomInt(sliderMinValue, sliderMaxValue);
+        op1 = getRandomInt(SLIDER_MIN_VALUE, SLIDER_MAX_VALUE);
+        op2 = getRandomInt(SLIDER_MIN_VALUE, SLIDER_MAX_VALUE);
         symbol = "+";
-        result = op1 * op2;
-        answer = getRandomInt(1, 3);
+        result = op1 + op2;
+        answer = getRandomInt(1, 2);
+        text =
+          answer == 1
+            ? MYSTERY_PLUS_OP1 + " " + op2 + " " + EQUAL + " " + result
+            : op1 + " " + MYSTERY_PLUS_OP2 + " " + EQUAL + " " + result;
         break;
       case 6: // mystery subtraction
-        value1 = getRandomInt(sliderMinValue, sliderMaxValue);
-        value2 = getRandomInt(sliderMinValue, sliderMaxValue);
+        value1 = getRandomInt(SLIDER_MIN_VALUE, SLIDER_MAX_VALUE);
+        value2 = getRandomInt(SLIDER_MIN_VALUE, SLIDER_MAX_VALUE);
         op1 = value1 >= value2 ? value1 : value2;
         op2 = value1 >= value2 ? value2 : value1;
         symbol = "-";
         result = op1 - op2;
-        answer = getRandomInt(1, 3);
+        answer = getRandomInt(1, 2);
+        text =
+          answer == 1
+            ? MYSTERY_MINUS_OP1 + " " + op2 + " " + EQUAL + " " + result
+            : op1 + " " + MYSTERY_MINUS_OP2 + " " + EQUAL + " " + result;
         break;
       case 7: // mystery multiplication
-        op1 = getRandomInt(sliderMinValue, maxValue.multiDiv);
-        op2 = getRandomInt(sliderMinValue, maxValue.multiDiv);
-        symbol = "*";
+        op1 = getRandomInt(SLIDER_MIN_VALUE, maxValue.multiDiv);
+        op2 = getRandomInt(SLIDER_MIN_VALUE, maxValue.multiDiv);
+        symbol = "X";
         result = op1 * op2;
-        answer = getRandomInt(1, 3);
+        answer = getRandomInt(1, 2);
+        text =
+          answer == 1
+            ? MYSTERY_MULTIPLY_BY_OP1 + " " + op2 + " " + EQUAL + " " + result
+            : op1 + " " + MYSTERY_MULTIPLY_BY_OP2 + " " + EQUAL + " " + result;
         break;
       case 8: // mystery division
-        result = getRandomInt(sliderMinValue, maxValue.multiDiv);
-        op2 = getRandomInt(sliderMinValue, maxValue.multiDiv);
+        result = getRandomInt(SLIDER_MIN_VALUE, maxValue.multiDiv);
+        op2 = getRandomInt(SLIDER_MIN_VALUE, maxValue.multiDiv);
         symbol = "/";
         op1 = op2 * result;
-        answer = getRandomInt(1, 3);
+        answer = getRandomInt(1, 2);
+        text =
+          answer == 1
+            ? MYSTERY_DIVIDE_BY_OP1 + " " + op2 + " " + EQUAL + " " + result
+            : op1 + " " + MYSTERY_DIVIDE_BY_OP2 + " " + EQUAL + " " + result;
         break;
       default:
         break;
     }
-    const formula = {
+
+    // formula
+    readText(text);
+
+    return {
       op1: op1,
       op2: op2,
       symbol: symbol,
       result: result,
       answer: answer, // 1: op1, 2: op2, 3: result
+      text: text,
     };
-    return formula;
   };
 
   const getRandomInt = (min, max) => {
-    return Math.floor(Math.random() * (max - min) + min);
+    return Math.floor(Math.random() * max) + min;
   };
 
   const handleCheck = () => {
-    if (answer != "") {
+    if (answer !== "") {
       setCheckClicked(true);
     } else {
+      readText(NO_ANSWER_MESSAGE);
       setAnswerState(3);
       setTimeout(() => {
         setAnswerState(4);
-      }, delaySeconds * 1000);
+      }, DELAY_SECONDS * 1000);
     }
   };
 
@@ -137,17 +186,13 @@ const CalculatorScreen = ({ problemId }) => {
       setAnswerState(0);
       setSolvedCount(solvedCount + 1);
       setFormula(setFormulaItems());
-    }, delaySeconds * 1000);
+    }, DELAY_SECONDS * 1000);
   };
 
   const delayShowingModal = () => {
     setTimeout(() => {
       setModalVisible(true);
-    }, delaySeconds * 1000);
-  };
-
-  const handleCancel = () => {
-    dispatch({ type: SET_PROBLEM_ID, payload: 0 });
+    }, DELAY_SECONDS * 1000);
   };
 
   const sec2Time = (sec) => {
@@ -172,18 +217,24 @@ const CalculatorScreen = ({ problemId }) => {
     }
     setCorrectAnswer(correctValue);
     if (answer == correctValue && checkClicked) {
+      readText(CORRECT_MESSAGE);
       setAnswerState(1);
       setCorrectCount(correctCount + 1);
-      correctCnt++;
-    } else if (answer != "" && checkClicked) {
+    } else if (answer !== "" && checkClicked) {
+      readText(WRONG_MESSAGE);
       setAnswerState(2);
       setWrongCount(wrongCount + 1);
     }
   };
 
+  const handleCancel = () => {
+    dispatch({ type: SET_PROBLEM_ID, payload: 0 });
+  };
+
   const handleStartOver = () => {
-    setStartTime(Date.now() / 1000);
     setModalVisible(false);
+    setStartTime(Date.now() / 1000);
+    setEndTime(Date.now() / 1000);
     setCheckClicked(false);
     setCorrectAnswer(0);
     setCorrectCount(0);
@@ -191,7 +242,6 @@ const CalculatorScreen = ({ problemId }) => {
     setSolvedCount(1);
     setAnswerState(4);
     setAnswer("");
-    correctCnt = 0;
     setFormula(setFormulaItems());
   };
 
@@ -200,6 +250,7 @@ const CalculatorScreen = ({ problemId }) => {
   };
 
   useEffect(() => {
+    // reset the formula
     setFormula(setFormulaItems());
   }, []);
 
@@ -213,7 +264,7 @@ const CalculatorScreen = ({ problemId }) => {
         setEndTime(eTime);
         setScoreArray([
           ...scoreArray,
-          Math.floor((correctCnt / (eTime - startTime)) * 1000),
+          Math.ceil((correctCount / (eTime - startTime)) * 1000),
         ]);
         delayShowingModal();
       }
@@ -221,7 +272,7 @@ const CalculatorScreen = ({ problemId }) => {
   }, [checkClicked]);
 
   return (
-    <Screen>
+    <Screen style={styles.screen}>
       <Header showCancel={true} onCancelPress={handleCancel} />
       <View style={styles.container}>
         <View style={styles.markContainer}>
@@ -240,15 +291,15 @@ const CalculatorScreen = ({ problemId }) => {
         <View style={styles.messageContainer}>
           {answerState == 1 ? (
             <Text style={[styles.message, { color: "#0f0" }]}>
-              {correctMessage}
+              {CORRECT_MESSAGE}
             </Text>
           ) : answerState == 2 ? (
             <Text style={[styles.message, { color: "#f00" }]}>
-              {errorMessage} {correctAnswer}
+              {ERROR_MESSAGE} {correctAnswer}
             </Text>
           ) : answerState == 3 ? (
             <Text style={[styles.message, { color: "#f00" }]}>
-              Please type answer.
+              {NO_ANSWER_MESSAGE}
             </Text>
           ) : (
             <Text style={styles.message}></Text>
@@ -258,19 +309,25 @@ const CalculatorScreen = ({ problemId }) => {
           {formula && formula.answer != 1 ? (
             <Text style={styles.problem}>{formula.op1}</Text>
           ) : (
-            <Text style={[styles.problem, styles.emptyBox]}>{answer}</Text>
+            <View style={styles.emptyBox}>
+              <Text style={styles.problem}>{answer}</Text>
+            </View>
           )}
           <Text style={styles.problem}>{formula && formula.symbol}</Text>
           {formula && formula.answer != 2 ? (
             <Text style={styles.problem}>{formula.op2}</Text>
           ) : (
-            <Text style={[styles.problem, styles.emptyBox]}>{answer}</Text>
+            <View style={styles.emptyBox}>
+              <Text style={styles.problem}>{answer}</Text>
+            </View>
           )}
           <Text style={styles.problem}>=</Text>
           {formula && formula.answer != 3 ? (
             <Text style={styles.problem}>{formula.result}</Text>
           ) : (
-            <Text style={[styles.problem, styles.emptyBox]}>{answer}</Text>
+            <View style={styles.emptyBox}>
+              <Text style={styles.problem}>{answer}</Text>
+            </View>
           )}
         </View>
         <View style={styles.checkContainer}>
@@ -295,8 +352,8 @@ const CalculatorScreen = ({ problemId }) => {
             <Text style={styles.scoreText}>Last 5 Scores</Text>
             {scoreArray.length > 0 &&
               scoreArray.slice(-5).map((score, index) => (
-                <View key={index}>
-                  <Text style={styles.scoreText}>
+                <View key={index} style={{ width: wp("11%") }}>
+                  <Text style={styles.lastFiveScoreText}>
                     {index + 1}. {score}
                   </Text>
                 </View>
@@ -401,15 +458,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   emptyBox: {
-    height: hp("6.5%"),
+    height: hp("8%"),
     backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
     borderWidth: 5,
+  },
+  lastFiveScoreText: {
+    fontSize: wp("4%"),
+    marginBottom: 5,
   },
   markContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    height: hp("6%"),
+    height: hp("6.5%"),
   },
   message: {
     fontSize: wp("7%"),
@@ -469,6 +532,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
+    height: hp("6%"),
   },
   problemText: {
     fontSize: wp("5%"),
@@ -487,6 +551,9 @@ const styles = StyleSheet.create({
     fontSize: wp("4%"),
     textAlign: "center",
     marginBottom: 5,
+  },
+  screen: {
+    paddingTop: Platform.OS === "ios" ? Constants.statusBarHeight : 0,
   },
 });
 

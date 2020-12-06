@@ -5,6 +5,7 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import Tooltip from "react-native-walkthrough-tooltip";
+
 import SettingScreen from "../screens/SettingScreen";
 import ButtonIcon from "./ButtonIcon";
 

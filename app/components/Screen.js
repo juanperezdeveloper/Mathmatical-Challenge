@@ -1,11 +1,10 @@
 import React from "react";
-import { ImageBackground, StyleSheet, View } from "react-native";
-import Constants from "expo-constants";
+import { View, ImageBackground, StyleSheet } from "react-native";
 
 const image = require("../assets/images/1x/background.png");
 
-const Screen = ({ children }) => (
-  <View style={styles.container}>
+const Screen = ({ children, style }) => (
+  <View style={[styles.container, style]}>
     <ImageBackground source={image} style={styles.image}>
       {children}
     </ImageBackground>
@@ -16,7 +15,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "column",
-    paddingTop: Constants.statusBarHeight,
   },
   image: {
     flex: 1,

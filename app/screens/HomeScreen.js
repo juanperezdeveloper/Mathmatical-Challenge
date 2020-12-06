@@ -1,5 +1,7 @@
 import React from "react";
-import { Modal } from "react-native";
+import { Modal, StyleSheet } from "react-native";
+import Constants from "expo-constants";
+
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import Screen from "../components/Screen";
@@ -11,22 +13,24 @@ import { useSelector } from "react-redux";
 const HomeScreen = () => {
   const problemId = useSelector((state) => state.math.problemId);
 
-  return (
-    <Screen>
+  return !problemId ? (
+    <Screen style={styles.screen}>
       <Header showSetting={true} />
-      {!problemId ? (
-        <>
-          <GameTitle />
-          <ProblemGroup />
-          <Footer />
-        </>
-      ) : (
-        <Modal visible={true} animationType="fade">
-          <CalculatorScreen problemId={problemId} />
-        </Modal>
-      )}
+      <GameTitle />
+      <ProblemGroup />
+      <Footer />
     </Screen>
+  ) : (
+    <Modal visible={true} animationType="fade">
+      <CalculatorScreen problemId={problemId} />
+    </Modal>
   );
 };
+
+const styles = StyleSheet.create({
+  screen: {
+    paddingTop: Constants.statusBarHeight,
+  }, 
+});
 
 export default HomeScreen;

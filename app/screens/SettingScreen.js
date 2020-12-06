@@ -4,14 +4,15 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
+
 import ButtonIcon from "../components/ButtonIcon";
 import CustomSlider from "../components/CustomSlider";
 import CustomSwitch from "../components/CustomSwitch";
 import {
-  sliderMinValue,
-  sliderMaxValue,
-  speechMinValue,
-  speechMaxValue,
+  SLIDER_MIN_VALUE,
+  SLIDER_MAX_VALUE,
+  SPEECH_MIN_VALUE,
+  SPEECH_MAX_VALUE,
 } from "../common/Constants";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -87,40 +88,40 @@ const Settings = () => {
         />
         <CustomSlider
           text={"Number Of Problems"}
-          min={sliderMinValue}
-          max={sliderMaxValue}
+          min={SLIDER_MIN_VALUE}
+          max={SLIDER_MAX_VALUE}
           onValueChange={(val) => handleChangeValue(val, 1)}
           value={numberOfProblems}
           style={styles.controlSpace}
         />
         <CustomSlider
           text={"Addition"}
-          min={sliderMinValue}
-          max={sliderMaxValue}
+          min={SLIDER_MIN_VALUE}
+          max={SLIDER_MAX_VALUE}
           onValueChange={(val) => handleChangeValue(val, 2)}
           value={maxValue.add}
           style={styles.controlSpace}
         />
         <CustomSlider
           text={"Subtraction"}
-          min={sliderMinValue}
-          max={sliderMaxValue}
+          min={SLIDER_MIN_VALUE}
+          max={SLIDER_MAX_VALUE}
           onValueChange={(val) => handleChangeValue(val, 3)}
           value={maxValue.sub}
           style={styles.controlSpace}
         />
         <CustomSlider
           text={"Multiplication/Division"}
-          min={sliderMinValue}
-          max={sliderMaxValue}
+          min={SLIDER_MIN_VALUE}
+          max={SLIDER_MAX_VALUE}
           onValueChange={(val) => handleChangeValue(val, 4)}
           value={maxValue.multiDiv}
           style={styles.controlSpace}
         />
         <CustomSlider
           text={"Speech speed"}
-          min={speechMinValue}
-          max={speechMaxValue}
+          min={SPEECH_MIN_VALUE}
+          max={SPEECH_MAX_VALUE}
           onValueChange={(val) => handleChangeValue(val, 5)}
           value={speech.speed}
           style={styles.controlSpace}
